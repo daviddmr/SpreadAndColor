@@ -10,7 +10,8 @@ import com.david.study.spreadandcolor.R
 
 class MyMainAdapter(
     private val context: Context,
-    private val itemList: Int
+    private val itemList: Int,
+    private val listener: View.OnClickListener
 ) : RecyclerView.Adapter<MyMainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyMainViewHolder {
@@ -25,6 +26,7 @@ class MyMainAdapter(
     }
 
     override fun onBindViewHolder(holder: MyMainViewHolder, position: Int) {
+        holder.btField.setOnClickListener(listener)
     }
 }
 
