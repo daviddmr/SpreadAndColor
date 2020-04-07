@@ -1,15 +1,17 @@
 package com.david.study.spreadandcolor
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.david.study.spreadandcolor.adapters.MyMainAdapter
 import com.david.study.spreadandcolor.utils.SpanningGridLayoutManager
+import com.david.study.spreadandcolor.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.pow
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var myMainAdapter: MyMainAdapter
 
@@ -17,26 +19,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val numberOfLines = 3.0
-        val numberOfItems = numberOfLines.pow(2)
+        val numberOfItems = numberOfLines.pow(2).toInt()
+        val pieceList = viewModel.getPieceListMapped(numberOfLines, numberOfItems)
 
         rv_fields.setHasFixedSize(true)
         val gridLayoutManager = SpanningGridLayoutManager(this, numberOfLines.toInt())
         rv_fields.layoutManager = gridLayoutManager
 
-        myMainAdapter = MyMainAdapter(this, numberOfItems.toInt(), onClickListener())
+        myMainAdapter = MyMainAdapter(this, pieceList, this)
         rv_fields.adapter = myMainAdapter
     }
 
-    private fun onClickListener(): View.OnClickListener {
-        return View.OnClickListener { view ->
-            val button = view as Button
-            if (button.text == "Clicked") {
-                button.text = ""
-            } else {
-                button.text = "Clicked"
-            }
-        }
+    override fun onPieceClickListener(position: Int) {
+        myMainAdapter.flipPiece(position)
     }
+}
+
+interface OnClickListener {
+    fun onPieceClickListener(position: Int)
 }
