@@ -43,6 +43,28 @@ class MyMainAdapter(
         val piece = pieceList[position]
         piece.isSelected = !piece.isSelected
         notifyItemChanged(position)
+        flipAdjacentsPieces(piece.line, piece.column)
+    }
+
+    private fun flipAdjacentsPieces(line: Int, column: Int) {
+
+        for ((position, piece) in pieceList.withIndex()) {
+            for (i in line - 1..line + 1) {
+                for (j in column - 1..column + 1) {
+                    if (i != line || j != column) {
+                        if (piece.line == i && piece.column == j) {
+                            flipOnePiece(position)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun flipOnePiece(position: Int) {
+        val piece = pieceList[position]
+        piece.isSelected = !piece.isSelected
+        notifyItemChanged(position)
     }
 }
 
