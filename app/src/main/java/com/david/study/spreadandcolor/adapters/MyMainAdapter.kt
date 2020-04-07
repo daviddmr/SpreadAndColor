@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
+import com.david.study.spreadandcolor.OnClickListener
 import com.david.study.spreadandcolor.R
+import com.david.study.spreadandcolor.models.Piece
 
 class MyMainAdapter(
     private val context: Context,
-    private val itemList: Int,
-    private val listener: View.OnClickListener
+    private val pieceList: List<Piece>,
+    private val listener: OnClickListener
 ) : RecyclerView.Adapter<MyMainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyMainViewHolder {
@@ -22,11 +24,25 @@ class MyMainAdapter(
     }
 
     override fun getItemCount(): Int {
-        return itemList
+        return pieceList.size
     }
 
     override fun onBindViewHolder(holder: MyMainViewHolder, position: Int) {
-        holder.btField.setOnClickListener(listener)
+        holder.btField.setOnClickListener {
+            listener.onPieceClickListener(position)
+        }
+
+        if (pieceList[position].isSelected) {
+            holder.btField.text = "Clicked"
+        } else {
+            holder.btField.text = ""
+        }
+    }
+
+    fun flipPiece(position: Int) {
+        val piece = pieceList[position]
+        piece.isSelected = !piece.isSelected
+        notifyItemChanged(position)
     }
 }
 
