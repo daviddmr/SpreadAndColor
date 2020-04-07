@@ -14,6 +14,7 @@ import kotlin.math.pow
 class MainActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var myMainAdapter: MyMainAdapter
+    private val numberOfLines = 3.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         setContentView(R.layout.activity_main)
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val numberOfLines = 3.0
         val numberOfItems = numberOfLines.pow(2).toInt()
         val pieceList = viewModel.getPieceListMapped(numberOfLines, numberOfItems)
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onPieceClickListener(position: Int) {
-        myMainAdapter.flipSelectedPiece(position)
+        myMainAdapter.flipSelectedPiece(position, numberOfLines)
     }
 }
 
