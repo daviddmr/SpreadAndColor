@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         val pieceList = viewModel.getPieceListMapped(numberOfLines, numberOfItems)
 
         rv_fields.setHasFixedSize(true)
+        //Disable animation during notifyItemChanged()
+        (rv_fields.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
         val gridLayoutManager = SpanningGridLayoutManager(this, numberOfLines.toInt())
         rv_fields.layoutManager = gridLayoutManager
 
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onPieceClickListener(position: Int) {
-        myMainAdapter.flipPiece(position)
+        myMainAdapter.flipSelectedPiece(position)
     }
 }
 
